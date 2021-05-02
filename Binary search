@@ -1,0 +1,81 @@
+Binary search
+Time Complexity:O(logn)
+Space Complexity=O(1)
+Problem Statement:
+Given an integer K and an array height[] of size N, where height[i] denotes the height of the ith tree in a forest. The task is to make a cut of height X from the ground such that at max K unit wood is collected. Find the minimum value of X
+
+If you make a cut of height X from the ground then every tree with a height greater than X will be reduced to X and remaining part of wood can be collected
+Input
+The first line contains two integers N and K.
+Next line contains N integers denoting the elements of the array height[]
+
+Constraints
+1 <= N <= 100000
+1 <= arr[i] <= 100000
+1 <= K <= 10000000
+Output
+Print a single integer the value of X.
+Example:
+Sample Input:
+4 2
+1 2 1 2
+
+Sample Output:
+1
+
+Explanation:
+Make a cut at height 1, the updated array will be {1, 1, 1, 1} and
+the collected wood will be {0, 1, 0, 1} i. e. 0 + 1 + 0 + 1 = 2.
+code:
+import java.io.*; // for handling input/output
+import java.util.*; // contains Collections framework
+
+// don't change the name of this class
+// you can add inner classes if needed
+class Main {
+	public static long collect(int height[],int x,int n)
+	{
+		long sum=0;
+		for(int i=0;i<n;i++)
+		{
+			if(height[i]>x){
+			sum+=(height[i]-x);
+			}
+		}
+	//System.out.println(sum);
+		return sum;
+		
+	}
+	public static int cutTree(int height[],int n,long k)
+	{
+		int low=1; 
+		int high=n-1;
+		while(low<high)
+		{
+			int mid=low+(high-low)/2;
+			long w=collect(height,mid,n);
+			 if(w>k)
+			{
+				low=mid+1;
+			}
+			else{
+				high=mid;
+			}
+		}
+		return low;
+	}
+	public static void main (String[] args)throws IOException {
+		BufferedReader read = new BufferedReader(new InputStreamReader(System.in)); 
+            String str[] = read.readLine().trim().split(" ");
+            int N = Integer.parseInt(str[0]);
+            long k = Long.parseLong(str[1]);
+            int arr[] = new int[N];
+            str = read.readLine().trim().split(" ");
+            for(int i = 0; i < N; i++){
+                arr[i] = Integer.parseInt(str[i]);
+			}
+			Arrays.sort(arr);
+            int wood=cutTree(arr,N,k);
+			System.out.println(wood);         // Your code here
+	}
+}
